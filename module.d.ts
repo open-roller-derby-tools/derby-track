@@ -349,21 +349,21 @@ const getIntersectionsWithCircle: (
   radius: number
 ) => [] | [THREE.Vector2] | [THREE.Vector2, THREE.Vector2];
 
-type isSkaterInEngagementZoneSector<Skater extends SkaterWDPPivotLineDistance> =
-  {
-    skater: Skater;
-    packBoundaries: [number, number];
-    method: typeof PACK_MEASURING_METHODS.SECTOR;
-  };
-type isSkaterInEngagementZoneRectangle<Skater extends Position> = {
-  skater: Skater;
-  packBoundaries: [Skater, Skater];
-  method: typeof PACK_MEASURING_METHODS.RECTANGLE;
+// Positional overloads matching the runtime call signature
+// (skater, packBoundaries, method). Previously typed as a single options
+// object, which did not match how the function is actually called.
+export const isSkaterInEngagementZone: {
+	<Skater extends SkaterWDPPivotLineDistance>(
+		skater: Skater,
+		packBoundaries: [number, number],
+		method: typeof PACK_MEASURING_METHODS.SECTOR
+	): boolean;
+	<Skater extends Position>(
+		skater: Skater,
+		packBoundaries: [Skater, Skater],
+		method: typeof PACK_MEASURING_METHODS.RECTANGLE
+	): boolean;
 };
-
-export const isSkaterInEngagementZone: (
-  ...args: isSkaterInEngagementZoneSector | isSkaterInEngagementZoneRectangle
-) => boolean;
 
 /**
  * Generate the shape of the track having the start and end point
