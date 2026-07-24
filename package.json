@@ -25,6 +25,11 @@
   "peerDependencies": {
     "three": "*"
   },
+  "peerDependenciesMeta": {
+    "three": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@babel/cli": "^7.21.5",
     "@babel/core": "^7.22.1",

@@ -28,7 +28,7 @@ A skater is a plain object: `{ x, y, id, team, isJammer?, isPivot?, rotation? }`
 
 ## Peer Dependencies
 
-Uses three.js only for the optional 3D shapes (`packDrawing3D`). The 2D modules use a vendored `Vector2` and have no three.js dependency. Tested with three.js `^0.115.0`; will probably run on different versions as well.
+three.js is an optional peer dependency, used only for the 3D shapes (`packDrawing3D`). The 2D modules use a vendored `Vector2` and have no three.js dependency. Tested with three.js `^0.115.0`; will probably run on different versions as well.
 
 ## Examples
 
