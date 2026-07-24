@@ -1,9 +1,9 @@
 {
-  "name": "roller-derby-track-utils",
+  "name": "@open-roller-derby-tools/derby-track",
   "repository": {
-    "url": "https://github.com/webdingens/track-viz"
+    "url": "https://github.com/open-roller-derby-tools/derby-track"
   },
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Various computations for displaying roller derby track data",
   "main": "index.js",
   "module": "src/index.js",

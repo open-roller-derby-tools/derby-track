@@ -1,6 +1,20 @@
-# Roller Derby Track Utils
+# Derby Track
 
-Compute skater states, pack definition, pack shapes and engagement zone shapes. Used in [Track-Viz](https://github.com/webdingens/track-viz) project.
+A renderer-agnostic library for roller-derby track geometry, pack definition and engagement-zone computation — pure functions operating in metres, emitting plain data and SVG path strings.
+
+This is a **fork of [`roller-derby-track-utils`](https://github.com/webdingens/track-viz)** by [webdingens](https://github.com/webdingens), the package used by [Track-Viz](https://github.com/webdingens/track-viz). Full credit for the track model and rules engine goes to the original author; this fork hardens and modernises it while staying API-compatible.
+
+## Improvements over upstream
+
+- **Fixed engagement-zone drift** — `isSkaterInEngagementZone` (SECTOR) mutated the shared `packBoundaries` array, growing the zone ~20 ft per skater until everyone read as in play. Now computed without mutation.
+- **Corrected type definitions** — `isSkaterInEngagementZone` is typed positionally (matching the runtime), `computePartialTrackShape2D` `p1`/`p2` are typed per method, and `SkaterDataType` accepts `string | number` ids and arbitrary team labels.
+- **Configurable in-bounds radius** — `getSkatersWDPInBounds(skaters, { radius })`.
+- **Dropped `lodash`** — `cloneDeep` replaced with `structuredClone`.
+- **Dropped the hard `three` dependency for 2D** — the 2D modules use a vendored `Vector2`; `three` is now an optional peer (only `packDrawing3D` needs it).
+- **Tests** — a Vitest suite (ported from the downstream Derbyboard integration), including a regression for the drift bug.
+- **Documentation** — the coordinate system and `pivotLineDist` convention are documented below.
+
+See the commit history for the individual, upstreamable changes.
 
 ## Coordinate system
 
@@ -33,3 +47,7 @@ three.js is an optional peer dependency, used only for the 3D shapes (`packDrawi
 ## Examples
 
 2D and 3D rendering examples can be found in the `examples` folder.
+
+## License
+
+Unlicense — same as the upstream package.
