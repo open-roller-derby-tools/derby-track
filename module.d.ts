@@ -17,8 +17,8 @@ type PivotLineDist = {
 };
 
 export type SkaterDataType = {
-  id: number;
-  team: "A" | "B";
+  id: string | number;
+  team: string;
   isPivot?: boolean;
   isJammer?: boolean;
 } & Position &
