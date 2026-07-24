@@ -1,5 +1,4 @@
-import * as THREE from "three";
-const { Vector2 } = THREE;
+import { Vector2 } from "./vector2.js";
 
 import {
   C1,
