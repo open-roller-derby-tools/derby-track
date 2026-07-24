@@ -66,6 +66,16 @@ describe('pack pipeline (SECTOR)', () => {
 	});
 });
 
+describe('getSkatersWDPInBounds (configurable radius)', () => {
+	it('applies the provided radius', () => {
+		// 0.5 m inside the inner edge: in bounds at the default 0.3 m margin,
+		// out of bounds at a 1.0 m margin.
+		const skaters = [{ id: 1, x: 0, y: -(3.81 + 0.5), team: 'A' }];
+		expect(getSkatersWDPInBounds(skaters)[0].inBounds).toBe(true);
+		expect(getSkatersWDPInBounds(skaters, { radius: 1.0 })[0].inBounds).toBe(false);
+	});
+});
+
 describe('computePartialTrackShape2D (SECTOR)', () => {
 	it('returns a closed SVG path for a pack', () => {
 		const skaters = [

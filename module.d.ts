@@ -73,7 +73,8 @@ export const PACK_MEASURING_METHODS = {
  * Get Skaters with Derived Property inBounds
  */
 export const getSkatersWDPInBounds: <Skater extends Position>(
-  skaters: Skater[]
+  skaters: Skater[],
+  options?: { radius?: number }
 ) => (Skater & { inBounds: boolean })[];
 
 /**

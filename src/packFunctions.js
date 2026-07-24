@@ -24,7 +24,7 @@ import {
 /**
  * Get Skaters with Derived Property inBounds
  */
-export const getSkatersWDPInBounds = (skaters) => {
+export const getSkatersWDPInBounds = (skaters, { radius = SKATER_RADIUS } = {}) => {
   return skaters.map((skater) => {
     let pos = new Vector2(skater.x, skater.y); // blocker position
     let ret = _.cloneDeep(skater);
@@ -33,8 +33,8 @@ export const getSkatersWDPInBounds = (skaters) => {
     if (pos.x > C1.x) {
       // not inside the track nor outside
       if (
-        C1.distanceTo(pos) < RADIUS_INNER + SKATER_RADIUS ||
-        C1_OUTER.distanceTo(pos) > RADIUS_OUTER - SKATER_RADIUS
+        C1.distanceTo(pos) < RADIUS_INNER + radius ||
+        C1_OUTER.distanceTo(pos) > RADIUS_OUTER - radius
       ) {
         ret.inBounds = false;
         return ret;
@@ -45,8 +45,8 @@ export const getSkatersWDPInBounds = (skaters) => {
     if (pos.x <= C1.x && pos.x >= C2.x && pos.y <= 0) {
       // not inside the track nor outside
       if (
-        pos.y > -RADIUS_INNER - SKATER_RADIUS ||
-        F_OUTER_TOP(pos.x) + SKATER_RADIUS > pos.y
+        pos.y > -RADIUS_INNER - radius ||
+        F_OUTER_TOP(pos.x) + radius > pos.y
       ) {
         ret.inBounds = false;
         return ret;
@@ -57,8 +57,8 @@ export const getSkatersWDPInBounds = (skaters) => {
     if (pos.x < C2.x) {
       // not inside the track nor outside
       if (
-        C2.distanceTo(pos) < RADIUS_INNER + SKATER_RADIUS ||
-        C2_OUTER.distanceTo(pos) > RADIUS_OUTER - SKATER_RADIUS
+        C2.distanceTo(pos) < RADIUS_INNER + radius ||
+        C2_OUTER.distanceTo(pos) > RADIUS_OUTER - radius
       ) {
         ret.inBounds = false;
         return ret;
@@ -69,8 +69,8 @@ export const getSkatersWDPInBounds = (skaters) => {
     if (pos.x <= C1.x && pos.x >= C2.x && pos.y > 0) {
       // not inside the track nor outside
       if (
-        pos.y < RADIUS_INNER + SKATER_RADIUS ||
-        F_OUTER_BOTTOM(pos.x) - SKATER_RADIUS < pos.y
+        pos.y < RADIUS_INNER + radius ||
+        F_OUTER_BOTTOM(pos.x) - radius < pos.y
       ) {
         ret.inBounds = false;
         return ret;
