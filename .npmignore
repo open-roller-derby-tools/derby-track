@@ -2,3 +2,5 @@
 node_modules
 .prettierrc
 .babelrc
+test
+vitest.config.js
