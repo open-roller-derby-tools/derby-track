@@ -373,13 +373,21 @@ export const isSkaterInEngagementZone: {
  * @param Number p2
  * @returns PathData / Polyline?
  */
-export const computePartialTrackShape2D: (options: {
-  p1: number;
-  p2: number;
-  method:
-    | typeof PACK_MEASURING_METHODS.SECTOR
-    | typeof PACK_MEASURING_METHODS.RECTANGLE;
-}) => string;
+// Method-dependent input: SECTOR takes pivotLineDist numbers, RECTANGLE takes
+// {inside, outside} corner intersections. Previously typed as numbers for both,
+// which did not match the RECTANGLE branch.
+export const computePartialTrackShape2D: {
+	(options: {
+		p1: number;
+		p2: number;
+		method: typeof PACK_MEASURING_METHODS.SECTOR;
+	}): string;
+	(options: {
+		p1: { inside: THREE.Vector2; outside: THREE.Vector2 };
+		p2: { inside: THREE.Vector2; outside: THREE.Vector2 };
+		method: typeof PACK_MEASURING_METHODS.RECTANGLE;
+	}): string;
+};
 
 export const computePartialTrackShapeSector2D: <
   T extends { p1: number; p2: number }
