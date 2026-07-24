@@ -12,8 +12,9 @@
   "scripts": {
     "build-module": "cross-env BABEL_ENV=module babel src -d module -s --copy-files",
     "build-node": "babel src -d dist -s --copy-files",
-    "build": "npm run build-node && npm run build-module",
-    "test": "echo \"Error: no test specified\" && exit 1"
+		"build": "npm run build-node && npm run build-module",
+		"test": "vitest run",
+		"test:watch": "vitest"
   },
   "keywords": [
     "Roller Derby",
@@ -29,7 +30,8 @@
     "@babel/cli": "^7.21.5",
     "@babel/core": "^7.22.1",
     "@babel/preset-env": "^7.22.4",
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "vitest": "^4.1.10"
   },
   "compilerOptions": {
     "target": "es6"
