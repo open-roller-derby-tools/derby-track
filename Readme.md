@@ -28,7 +28,7 @@ A skater is a plain object: `{ x, y, id, team, isJammer?, isPivot?, rotation? }`
 
 ## Peer Dependencies
 
-Uses lodash and three.js. Tested with three.js `^0.115.0` and with lodash `^4.17.15`. Will probably run on different versions as well. Three.js is used everywhere because of Vector2 for vector computations.
+Uses three.js for Vector2 computations. Tested with three.js `^0.115.0`. Will probably run on different versions as well.
 
 ## Examples
 

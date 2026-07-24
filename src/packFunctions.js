@@ -1,6 +1,5 @@
 import * as THREE from "three";
 const { Vector2 } = THREE;
-import _ from "lodash";
 
 import { isSkaterInEngagementZone } from "./engagementZone.js";
 import {
@@ -27,7 +26,7 @@ import {
 export const getSkatersWDPInBounds = (skaters, { radius = SKATER_RADIUS } = {}) => {
   return skaters.map((skater) => {
     let pos = new Vector2(skater.x, skater.y); // blocker position
-    let ret = _.cloneDeep(skater);
+    let ret = structuredClone(skater);
 
     // first half circle
     if (pos.x > C1.x) {
@@ -134,7 +133,7 @@ export const getPivotLineDistance = (position) => {
  * @param {object} skaters
  */
 export const getSkatersWDPPivotLineDistance = (skaters) => {
-  return _.cloneDeep(skaters).map((skater) => {
+  return structuredClone(skaters).map((skater) => {
     let pos = new Vector2(skater.x, skater.y); // blocker position
     skater.pivotLineDist = getPivotLineDistance(pos);
     return skater;
@@ -355,7 +354,7 @@ export const getPack = (
 export const getOutermostSkaters = (pack) => {
   if (!pack) return false;
   if (pack.length <= 2) return pack;
-  let blockers = _.cloneDeep(pack);
+  let blockers = structuredClone(pack);
 
   let blockerA = blockers[0];
   let blockerB;
@@ -400,7 +399,7 @@ export const getClosestOtherSkaterOfPack = (
   pack,
   method = PACK_MEASURING_METHODS.SECTOR
 ) => {
-  const blockers = _.cloneDeep(pack).filter((entry) => entry.id !== skater.id);
+  const blockers = structuredClone(pack).filter((entry) => entry.id !== skater.id);
   let minDist = null;
   let closestOtherSkater = null;
   blockers.forEach((blocker) => {
@@ -476,7 +475,7 @@ export const getSkatersWDPInPlayPackSkater = (
   }
 
   return skaters.map((skater) => {
-    let ret = _.cloneDeep(skater);
+    let ret = structuredClone(skater);
 
     if (skater.isJammer) {
       ret.inPlay = skater.inBounds;

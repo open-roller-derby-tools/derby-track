@@ -23,7 +23,6 @@
   "author": "webdingens",
   "license": "Unlicense",
   "peerDependencies": {
-    "lodash": "*",
     "three": "*"
   },
   "devDependencies": {
