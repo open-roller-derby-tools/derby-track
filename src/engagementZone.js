@@ -675,18 +675,23 @@ export const isSkaterInEngagementZone = (
   method = PACK_MEASURING_METHODS.SECTOR
 ) => {
   let boundaries = packBoundaries;
-  if (method === PACK_MEASURING_METHODS.SECTOR) {
-    let p = skater.pivotLineDist;
-    boundaries[0] -= ENGAGEMENT_ZONE_DISTANCE_TO_PACK;
-    boundaries[1] += ENGAGEMENT_ZONE_DISTANCE_TO_PACK;
-    if (
-      (p >= boundaries[0] && p <= boundaries[1]) ||
-      (p < boundaries[0] && p + MEASUREMENT_LENGTH <= boundaries[1]) ||
-      (p > boundaries[1] && p - MEASUREMENT_LENGTH >= boundaries[0])
-    ) {
-      return true;
-    }
-  }
+	if (method === PACK_MEASURING_METHODS.SECTOR) {
+		const p = skater.pivotLineDist;
+		// Engagement zone = pack boundaries +/- EZ distance. Compute locally
+		// without mutating the caller's packBoundaries array — it is shared
+		// across all skaters in getSkatersWDPInPlayPackSkater, so mutating it
+		// would grow the zone ~20 ft on every call and eventually mark everyone
+		// in play.
+		const lo = packBoundaries[0] - ENGAGEMENT_ZONE_DISTANCE_TO_PACK;
+		const hi = packBoundaries[1] + ENGAGEMENT_ZONE_DISTANCE_TO_PACK;
+		if (
+			(p >= lo && p <= hi) ||
+			(p < lo && p + MEASUREMENT_LENGTH <= hi) ||
+			(p > hi && p - MEASUREMENT_LENGTH >= lo)
+		) {
+			return true;
+		}
+	}
   if (method === PACK_MEASURING_METHODS.RECTANGLE) {
     const engagementZoneFront = getEngagementZoneIntersectionsRectangle(
       boundaries[1],

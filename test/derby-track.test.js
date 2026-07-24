@@ -86,3 +86,26 @@ describe('computePartialTrackShape2D (SECTOR)', () => {
 		expect(path.trimEnd().endsWith('Z')).toBe(true);
 	});
 });
+
+describe('engagement-zone membership (SECTOR)', () => {
+	it('does not mark a distant blocker as in play', () => {
+		// A 5-skater mixed pack on the top straight, plus one lone blocker far
+		// away on the bottom straight. The lone blocker is well outside the EZ.
+		// Regression: isSkaterInEngagementZone previously mutated the shared
+		// packBoundaries array, growing the zone ~20 ft per skater until everyone
+		// read as in play.
+		const skaters = [
+			{ id: 1, x: 0, y: -5.41, team: 'A' },
+			{ id: 2, x: 1, y: -5.41, team: 'B' },
+			{ id: 3, x: 2, y: -5.41, team: 'A' },
+			{ id: 4, x: 3, y: -5.41, team: 'B' },
+			{ id: 5, x: 4, y: -5.41, team: 'A' },
+			{ id: 6, x: 0, y: 5.41, team: 'B' }
+		];
+		const enriched = getSkatersWDPInPlayPackSkater(
+			getSkatersWDPPivotLineDistance(getSkatersWDPInBounds(skaters)),
+			{ method: PACK_MEASURING_METHODS.SECTOR }
+		);
+		expect(enriched.find((s) => s.id === 6).inPlay).toBe(false);
+	});
+});
