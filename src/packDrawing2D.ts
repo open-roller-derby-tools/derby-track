@@ -64,13 +64,13 @@ export const computePartialTrackShapeSector2D = ({ p1, p2 }) => {
   let currentIdx = 0;
 
   while (drawLength < end) {
-    let newDrawLength = drawLength + drawShapes[currentIdx].length;
-    let startBeforeEndOfSection = start < newDrawLength;
-    let endBeforeEndOfSection = end < newDrawLength;
-    let startBeforeStartOfSection = start < drawLength;
+    const newDrawLength = drawLength + drawShapes[currentIdx].length;
+    const startBeforeEndOfSection = start < newDrawLength;
+    const endBeforeEndOfSection = end < newDrawLength;
+    const startBeforeStartOfSection = start < drawLength;
 
     if (startBeforeEndOfSection) {
-      let drawing = drawShapes[currentIdx].drawOuterLine({
+      const drawing = drawShapes[currentIdx].drawOuterLine({
         start: startBeforeStartOfSection ? 0 : start - drawLength,
         end: endBeforeEndOfSection ? end - drawLength : false,
       });
@@ -91,19 +91,19 @@ export const computePartialTrackShapeSector2D = ({ p1, p2 }) => {
 
   // switching drawing direction
   // swap start and end
-  let tmp = start;
+  const tmp = start;
   start = end;
   end = tmp;
 
   // draw the inside lines (drat, counterclockwise)
   while (drawLength > 0) {
-    let newDrawLength = drawLength - drawShapes[currentIdx].length;
-    let stillNeedsDrawing = drawLength >= end;
-    let startBeforeEndOfSection = start >= drawLength;
-    let endBeforeStartOfSection = end < newDrawLength;
+    const newDrawLength = drawLength - drawShapes[currentIdx].length;
+    const stillNeedsDrawing = drawLength >= end;
+    const startBeforeEndOfSection = start >= drawLength;
+    const endBeforeStartOfSection = end < newDrawLength;
 
     if (stillNeedsDrawing) {
-      let drawing = drawShapes[currentIdx].drawInnerLine({
+      const drawing = drawShapes[currentIdx].drawInnerLine({
         start: startBeforeEndOfSection ? 0 : start - newDrawLength,
         end: endBeforeStartOfSection ? 0 : end - newDrawLength,
       });
@@ -161,13 +161,13 @@ export const computePartialTrackShapeRectangle2D = ({
   }
 
   while (drawLength < end) {
-    let newDrawLength = drawLength + drawShapes[currentIdx].length;
-    let startBeforeEndOfSection = start < newDrawLength;
-    let endBeforeEndOfSection = end < newDrawLength;
-    let startBeforeStartOfSection = start < drawLength;
+    const newDrawLength = drawLength + drawShapes[currentIdx].length;
+    const startBeforeEndOfSection = start < newDrawLength;
+    const endBeforeEndOfSection = end < newDrawLength;
+    const startBeforeStartOfSection = start < drawLength;
 
     if (startBeforeEndOfSection) {
-      let drawing = drawShapes[currentIdx].drawOuterLine({
+      const drawing = drawShapes[currentIdx].drawOuterLine({
         start: startBeforeStartOfSection ? 0 : start - drawLength,
         end: endBeforeEndOfSection ? end - drawLength : false,
       });
@@ -208,13 +208,13 @@ export const computePartialTrackShapeRectangle2D = ({
 
   // draw the inside lines (counterclockwise)
   while (drawLength > 0) {
-    let newDrawLength = drawLength - drawShapes[currentIdx].length;
-    let stillNeedsDrawing = drawLength >= end;
-    let startBeforeEndOfSection = start >= drawLength;
-    let endBeforeStartOfSection = end < newDrawLength;
+    const newDrawLength = drawLength - drawShapes[currentIdx].length;
+    const stillNeedsDrawing = drawLength >= end;
+    const startBeforeEndOfSection = start >= drawLength;
+    const endBeforeStartOfSection = end < newDrawLength;
 
     if (stillNeedsDrawing) {
-      let drawing = drawShapes[currentIdx].drawInnerLine({
+      const drawing = drawShapes[currentIdx].drawInnerLine({
         start: startBeforeEndOfSection ? 0 : start - newDrawLength,
         end: endBeforeStartOfSection ? 0 : end - newDrawLength,
       });
@@ -243,9 +243,9 @@ export const drawShapes = [
       let data = "";
 
       if (end) {
-        let endAngle = (end / MEASUREMENT_RADIUS) * (180 / Math.PI);
-        let startAngle = (start / MEASUREMENT_RADIUS) * (180 / Math.PI);
-        let intersectionsFirstHalfCircle = angleToLineFirstHalfCircle(
+        const endAngle = (end / MEASUREMENT_RADIUS) * (180 / Math.PI);
+        const startAngle = (start / MEASUREMENT_RADIUS) * (180 / Math.PI);
+        const intersectionsFirstHalfCircle = angleToLineFirstHalfCircle(
           -(end / MEASUREMENT_RADIUS) + Math.PI / 2
         );
         const pOuter = intersectionsFirstHalfCircle[1];
@@ -254,7 +254,7 @@ export const drawShapes = [
           endAngle - startAngle
         } 0 0 ${pOuter.x},${pOuter.y}`;
       } else {
-        let endAngle = (start / MEASUREMENT_RADIUS) * (180 / Math.PI);
+        const endAngle = (start / MEASUREMENT_RADIUS) * (180 / Math.PI);
         // draw remaining arc
 
         data += ` A ${RADIUS_OUTER} ${RADIUS_OUTER} ${
@@ -281,9 +281,9 @@ export const drawShapes = [
         endAngle = 0;
       }
 
-      let endAngleRad = -((endAngle * Math.PI) / 180) + Math.PI / 2;
-      let direction = new Vector2(Math.cos(endAngleRad), Math.sin(endAngleRad));
-      let pInner = C1.clone().add(direction.multiplyScalar(RADIUS_INNER));
+      const endAngleRad = -((endAngle * Math.PI) / 180) + Math.PI / 2;
+      const direction = new Vector2(Math.cos(endAngleRad), Math.sin(endAngleRad));
+      const pInner = C1.clone().add(direction.multiplyScalar(RADIUS_INNER));
 
       data += ` A ${RADIUS_INNER} ${RADIUS_INNER} ${
         endAngle - startAngle
@@ -297,8 +297,8 @@ export const drawShapes = [
     length: LINE_DIST,
     drawOuterLine({ end }) {
       let data = "";
-      let xEnd = end ? end : LINE_DIST;
-      let pEnd = new Vector2(C1_OUTER.x - xEnd, F_OUTER_TOP(C1_OUTER.x - xEnd));
+      const xEnd = end ? end : LINE_DIST;
+      const pEnd = new Vector2(C1_OUTER.x - xEnd, F_OUTER_TOP(C1_OUTER.x - xEnd));
 
       data += drawLine({
         p1: null,
@@ -308,7 +308,7 @@ export const drawShapes = [
       return data;
     },
     drawInnerLine({ end }) {
-      let pEnd = new Vector2(C1.x - end, -RADIUS_INNER);
+      const pEnd = new Vector2(C1.x - end, -RADIUS_INNER);
 
       return drawLine({
         p1: null,
@@ -323,9 +323,9 @@ export const drawShapes = [
       let data = "";
 
       if (end) {
-        let endAngle = (end / MEASUREMENT_RADIUS) * (180 / Math.PI);
-        let startAngle = (start / MEASUREMENT_RADIUS) * (180 / Math.PI);
-        let intersectionsSecondHalfCircle = angleToLineSecondHalfCircle(
+        const endAngle = (end / MEASUREMENT_RADIUS) * (180 / Math.PI);
+        const startAngle = (start / MEASUREMENT_RADIUS) * (180 / Math.PI);
+        const intersectionsSecondHalfCircle = angleToLineSecondHalfCircle(
           -(end / MEASUREMENT_RADIUS) + Math.PI / 2 + Math.PI
         );
 
@@ -335,7 +335,7 @@ export const drawShapes = [
           intersectionsSecondHalfCircle[1].y
         }`;
       } else {
-        let endAngle = (start / MEASUREMENT_RADIUS) * (180 / Math.PI);
+        const endAngle = (start / MEASUREMENT_RADIUS) * (180 / Math.PI);
         // draw remaining arc
         data += ` A ${RADIUS_OUTER} ${RADIUS_OUTER} ${
           180 - endAngle
@@ -361,9 +361,9 @@ export const drawShapes = [
         endAngle = 0;
       }
 
-      let endAngleRad = -((endAngle * Math.PI) / 180) + Math.PI / 2 + Math.PI;
-      let direction = new Vector2(Math.cos(endAngleRad), Math.sin(endAngleRad));
-      let pInner = C2.clone().add(direction.multiplyScalar(RADIUS_INNER));
+      const endAngleRad = -((endAngle * Math.PI) / 180) + Math.PI / 2 + Math.PI;
+      const direction = new Vector2(Math.cos(endAngleRad), Math.sin(endAngleRad));
+      const pInner = C2.clone().add(direction.multiplyScalar(RADIUS_INNER));
 
       data += ` A ${RADIUS_INNER} ${RADIUS_INNER} ${
         endAngle - startAngle
@@ -377,8 +377,8 @@ export const drawShapes = [
     length: LINE_DIST,
     drawOuterLine({ end }) {
       let data = "";
-      let xEnd = end ? end : LINE_DIST;
-      let pEnd = new Vector2(
+      const xEnd = end ? end : LINE_DIST;
+      const pEnd = new Vector2(
         C2_OUTER.x + xEnd,
         F_OUTER_BOTTOM(C2_OUTER.x + xEnd)
       );
@@ -391,7 +391,7 @@ export const drawShapes = [
       return data;
     },
     drawInnerLine({ end }) {
-      let pEnd = new Vector2(C2.x + end, RADIUS_INNER);
+      const pEnd = new Vector2(C2.x + end, RADIUS_INNER);
 
       return drawLine({
         p1: null,

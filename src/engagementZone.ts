@@ -10,17 +10,19 @@ import {
   F_OUTER_TOP,
   MEASUREMENT_LENGTH,
   PACK_MEASURING_METHODS,
+  type PackMethod,
   RADIUS_INNER,
   RADIUS_OUTER,
 } from "./constants.js";
 import { getTwoOutermostSkatersInBothDirection } from "./packFunctions.js";
+import type { Position } from "./types.js";
 
 /*
  *   Get the engagement zone by the 2x2 intersections with the inside and
  *   outside line. (rectangle measurement)
  */
 export const getEngagementZoneIntersectionsRectangle = (
-  skater,
+  skater: Position,
   { front = true } = {}
 ) => {
   if (!skater) return false;
@@ -92,7 +94,7 @@ export const getEngagementZoneIntersectionsRectangle = (
      *   Intersect with half circles and adjacent straight aways
      */
 
-    let intersectionsHalfCircle = intersectLineRightHalfCircle(
+    const intersectionsHalfCircle = intersectLineRightHalfCircle(
       POnParallelLine,
       direction
     );
@@ -103,7 +105,7 @@ export const getEngagementZoneIntersectionsRectangle = (
     // console.log("PONPARALLEL: ", POnParallelLine);
 
     // console.log("intersect with straightaways");
-    let intersectionsStraightAways = front
+    const intersectionsStraightAways = front
       ? intersectLineStraightAwaysTop(POnParallelLine, direction)
       : intersectLineStraightAwaysBottom(POnParallelLine, direction);
 
@@ -192,12 +194,12 @@ export const getEngagementZoneIntersectionsRectangle = (
      *   Intersect with half circles and adjacent straight aways
      */
 
-    let intersectionsLeftHalfCircle = intersectLineLeftHalfCircle(
+    const intersectionsLeftHalfCircle = intersectLineLeftHalfCircle(
       POnParallelLine,
       direction
     );
 
-    let intersectionsStraightAways = front
+    const intersectionsStraightAways = front
       ? intersectLineStraightAwaysBottom(POnParallelLine, direction)
       : intersectLineStraightAwaysTop(POnParallelLine, direction);
 
@@ -241,11 +243,11 @@ export const getEngagementZoneIntersectionsRectangle = (
     );
     const direction = new Vector2(0, 1);
     if (POnParallelLine.y >= 0) {
-      let intersectionsHalfCircle = front
+      const intersectionsHalfCircle = front
         ? intersectLineRightHalfCircle(POnParallelLine, direction)
         : intersectLineLeftHalfCircle(POnParallelLine, direction);
 
-      let intersectionsStraightAway = intersectLineStraightAwaysBottom(
+      const intersectionsStraightAway = intersectLineStraightAwaysBottom(
         POnParallelLine,
         direction
       );
@@ -261,11 +263,11 @@ export const getEngagementZoneIntersectionsRectangle = (
 
       return intersections;
     } else {
-      let intersectionsHalfCircle = front
+      const intersectionsHalfCircle = front
         ? intersectLineLeftHalfCircle(POnParallelLine, direction)
         : intersectLineRightHalfCircle(POnParallelLine, direction);
 
-      let intersectionsStraightAway = intersectLineStraightAwaysTop(
+      const intersectionsStraightAway = intersectLineStraightAwaysTop(
         POnParallelLine,
         direction
       );
@@ -319,7 +321,7 @@ const getPackIntersectionsByEndRectangle = (
   const P1 = new Vector2(twoOutermostSkaters[0].x, twoOutermostSkaters[0].y);
   const P2 = new Vector2(twoOutermostSkaters[1].x, twoOutermostSkaters[1].y);
 
-  let alphaC1Middle = P1.clone().add(P2).multiplyScalar(0.5).sub(C1).angle();
+  const alphaC1Middle = P1.clone().add(P2).multiplyScalar(0.5).sub(C1).angle();
 
   if (
     alphaC1Middle >= (3 / 2) * Math.PI ||
@@ -335,12 +337,12 @@ const getPackIntersectionsByEndRectangle = (
      *   Intersect with half circles and adjacent straight aways
      */
 
-    let intersectionsHalfCircle = intersectLineRightHalfCircle(
+    const intersectionsHalfCircle = intersectLineRightHalfCircle(
       POnParallelLine,
       direction
     );
 
-    let intersectionsStraightAways = front
+    const intersectionsStraightAways = front
       ? intersectLineStraightAwaysTop(POnParallelLine, direction)
       : intersectLineStraightAwaysBottom(POnParallelLine, direction);
 
@@ -364,7 +366,7 @@ const getPackIntersectionsByEndRectangle = (
   //  *   Second Curve
   //  */
 
-  let alphaC2Middle = P1.clone().add(P2).multiplyScalar(0.5).sub(C2).angle();
+  const alphaC2Middle = P1.clone().add(P2).multiplyScalar(0.5).sub(C2).angle();
 
   if (
     alphaC2Middle >= (1 / 2) * Math.PI &&
@@ -380,12 +382,12 @@ const getPackIntersectionsByEndRectangle = (
      *   Intersect with half circles and adjacent straight aways
      */
 
-    let intersectionsLeftHalfCircle = intersectLineLeftHalfCircle(
+    const intersectionsLeftHalfCircle = intersectLineLeftHalfCircle(
       POnParallelLine,
       direction
     );
 
-    let intersectionsStraightAways = front
+    const intersectionsStraightAways = front
       ? intersectLineStraightAwaysBottom(POnParallelLine, direction)
       : intersectLineStraightAwaysTop(POnParallelLine, direction);
 
@@ -414,11 +416,11 @@ const getPackIntersectionsByEndRectangle = (
     const POnParallelLine = P1;
     const direction = new Vector2(0, 1);
     if (POnParallelLine.y >= 0) {
-      let intersectionsHalfCircle = front
+      const intersectionsHalfCircle = front
         ? intersectLineRightHalfCircle(POnParallelLine, direction)
         : intersectLineLeftHalfCircle(POnParallelLine, direction);
 
-      let intersectionsStraightAway = intersectLineStraightAwaysBottom(
+      const intersectionsStraightAway = intersectLineStraightAwaysBottom(
         POnParallelLine,
         direction
       );
@@ -434,11 +436,11 @@ const getPackIntersectionsByEndRectangle = (
 
       return intersections;
     } else {
-      let intersectionsHalfCircle = front
+      const intersectionsHalfCircle = front
         ? intersectLineLeftHalfCircle(POnParallelLine, direction)
         : intersectLineRightHalfCircle(POnParallelLine, direction);
 
-      let intersectionsStraightAway = intersectLineStraightAwaysTop(
+      const intersectionsStraightAway = intersectLineStraightAwaysTop(
         POnParallelLine,
         direction
       );
@@ -639,28 +641,28 @@ const getIntersectionsWithCircle = (
    *   https://mathworld.wolfram.com/Circle-LineIntersection.html
    */
   new Vector2(1, 2).length();
-  let p1 = origin.clone().add(direction).sub(circleCenter);
-  let p2 = origin.clone().sub(circleCenter);
-  let d = p2.clone().sub(p1);
-  let dr = d.length();
-  let D = p1.x * p2.y - p2.x * p1.y;
+  const p1 = origin.clone().add(direction).sub(circleCenter);
+  const p2 = origin.clone().sub(circleCenter);
+  const d = p2.clone().sub(p1);
+  const dr = d.length();
+  const D = p1.x * p2.y - p2.x * p1.y;
 
-  let determinant = radius * radius * dr * dr - D * D;
+  const determinant = radius * radius * dr * dr - D * D;
 
   if (determinant > 0) {
-    let x1 =
+    const x1 =
       (D * d.y + Math.sign(d.y) * d.x * Math.sqrt(determinant)) / (dr * dr);
-    let x2 =
+    const x2 =
       (D * d.y - Math.sign(d.y) * d.x * Math.sqrt(determinant)) / (dr * dr);
 
-    let y1 = (-D * d.x + Math.abs(d.y) * Math.sqrt(determinant)) / (dr * dr);
-    let y2 = (-D * d.x - Math.abs(d.y) * Math.sqrt(determinant)) / (dr * dr);
+    const y1 = (-D * d.x + Math.abs(d.y) * Math.sqrt(determinant)) / (dr * dr);
+    const y2 = (-D * d.x - Math.abs(d.y) * Math.sqrt(determinant)) / (dr * dr);
 
     intersections.push(new Vector2(x1, y1).add(circleCenter));
     intersections.push(new Vector2(x2, y2).add(circleCenter));
   } else if (determinant === 0) {
-    let x = (D * d.y) / (dr * dr);
-    let y = (-D * d.x) / (dr * dr);
+    const x = (D * d.y) / (dr * dr);
+    const y = (-D * d.x) / (dr * dr);
 
     intersections.push(new Vector2(x, y).add(circleCenter));
   }
@@ -669,20 +671,15 @@ const getIntersectionsWithCircle = (
 };
 
 export const isSkaterInEngagementZone = (
-  skater,
-  packBoundaries,
-  method = PACK_MEASURING_METHODS.SECTOR
-) => {
-  let boundaries = packBoundaries;
+  skater: Position & { pivotLineDist: number },
+  packBoundaries: [number, number] | [Position, Position],
+  method: PackMethod = PACK_MEASURING_METHODS.SECTOR
+): boolean => {
 	if (method === PACK_MEASURING_METHODS.SECTOR) {
 		const p = skater.pivotLineDist;
-		// Engagement zone = pack boundaries +/- EZ distance. Compute locally
-		// without mutating the caller's packBoundaries array — it is shared
-		// across all skaters in getSkatersWDPInPlayPackSkater, so mutating it
-		// would grow the zone ~20 ft on every call and eventually mark everyone
-		// in play.
-		const lo = packBoundaries[0] - ENGAGEMENT_ZONE_DISTANCE_TO_PACK;
-		const hi = packBoundaries[1] + ENGAGEMENT_ZONE_DISTANCE_TO_PACK;
+		const [rear, fore] = packBoundaries as [number, number];
+		const lo = rear - ENGAGEMENT_ZONE_DISTANCE_TO_PACK;
+		const hi = fore + ENGAGEMENT_ZONE_DISTANCE_TO_PACK;
 		if (
 			(p >= lo && p <= hi) ||
 			(p < lo && p + MEASUREMENT_LENGTH <= hi) ||
@@ -692,6 +689,7 @@ export const isSkaterInEngagementZone = (
 		}
 	}
   if (method === PACK_MEASURING_METHODS.RECTANGLE) {
+    const boundaries = packBoundaries as [Position, Position];
     const engagementZoneFront = getEngagementZoneIntersectionsRectangle(
       boundaries[1],
       {
@@ -704,8 +702,9 @@ export const isSkaterInEngagementZone = (
         front: false,
       }
     );
+    if (!engagementZoneFront || !engagementZoneBack) return false;
 
-    let frontAngle1 = engagementZoneFront.outside
+    const frontAngle1 = engagementZoneFront.outside
       .clone()
       .sub(engagementZoneFront.inside)
       .angle();
@@ -734,7 +733,7 @@ export const isSkaterInEngagementZone = (
       .clone()
       .sub(engagementZoneBack.inside)
       .angle();
-    let backAngle2 = engagementZoneFront.inside
+    const backAngle2 = engagementZoneFront.inside
       .clone()
       .sub(engagementZoneBack.inside)
       .angle();
@@ -773,7 +772,7 @@ export const isSkaterInEngagementZone = (
     }
 
     // same with outside points of opposing ends
-    let frontAngle1Outside = engagementZoneFront.outside
+    const frontAngle1Outside = engagementZoneFront.outside
       .clone()
       .sub(engagementZoneFront.inside)
       .angle();
@@ -795,7 +794,7 @@ export const isSkaterInEngagementZone = (
       .clone()
       .sub(engagementZoneBack.inside)
       .angle();
-    let backAngle2Outside = engagementZoneFront.outside
+    const backAngle2Outside = engagementZoneFront.outside
       .clone()
       .sub(engagementZoneBack.inside)
       .angle();

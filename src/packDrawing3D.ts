@@ -73,10 +73,10 @@ export const computePartialTrackShapeSector3D = ({
   let currentIdx = 0;
 
   while (drawLength < end) {
-    let newDrawLength = drawLength + drawShapes3D[currentIdx].length;
-    let startBeforeEndOfSection = start < newDrawLength;
-    let endBeforeEndOfSection = end < newDrawLength;
-    let startBeforeStartOfSection = start < drawLength;
+    const newDrawLength = drawLength + drawShapes3D[currentIdx].length;
+    const startBeforeEndOfSection = start < newDrawLength;
+    const endBeforeEndOfSection = end < newDrawLength;
+    const startBeforeStartOfSection = start < drawLength;
 
     if (startBeforeEndOfSection) {
       drawShapes3D[currentIdx].drawOuterLine({
@@ -100,16 +100,16 @@ export const computePartialTrackShapeSector3D = ({
 
   // switching drawing direction
   // swap start and end
-  let tmp = start;
+  const tmp = start;
   start = end;
   end = tmp;
 
   // draw the inside lines (drat, counterclockwise)
   while (drawLength > 0) {
-    let newDrawLength = drawLength - drawShapes3D[currentIdx].length;
-    let stillNeedsDrawing = drawLength >= end;
-    let startBeforeEndOfSection = start >= drawLength;
-    let endBeforeStartOfSection = end < newDrawLength;
+    const newDrawLength = drawLength - drawShapes3D[currentIdx].length;
+    const stillNeedsDrawing = drawLength >= end;
+    const startBeforeEndOfSection = start >= drawLength;
+    const endBeforeStartOfSection = end < newDrawLength;
 
     if (stillNeedsDrawing) {
       drawShapes3D[currentIdx].drawInnerLine({
@@ -124,10 +124,10 @@ export const computePartialTrackShapeSector3D = ({
   }
 
   // bundle up the shape into a mesh
-  let { curveSegments, ...materialOptions } = _options3D;
-  let geometry = new THREE.ShapeGeometry(shape, curveSegments);
-  let material = new THREE.MeshBasicMaterial(materialOptions);
-  let mesh = new THREE.Mesh(geometry, material);
+  const { curveSegments, ...materialOptions } = _options3D;
+  const geometry = new THREE.ShapeGeometry(shape, curveSegments);
+  const material = new THREE.MeshBasicMaterial(materialOptions);
+  const mesh = new THREE.Mesh(geometry, material);
   shape = mesh;
 
   return shape;
@@ -179,10 +179,10 @@ export const computePartialTrackShapeRectangle3D = ({
   }
 
   while (drawLength < end) {
-    let newDrawLength = drawLength + drawShapes3D[currentIdx].length;
-    let startBeforeEndOfSection = start < newDrawLength;
-    let endBeforeEndOfSection = end < newDrawLength;
-    let startBeforeStartOfSection = start < drawLength;
+    const newDrawLength = drawLength + drawShapes3D[currentIdx].length;
+    const startBeforeEndOfSection = start < newDrawLength;
+    const endBeforeEndOfSection = end < newDrawLength;
+    const startBeforeStartOfSection = start < drawLength;
 
     if (startBeforeEndOfSection) {
       drawShapes3D[currentIdx].drawOuterLine({
@@ -226,10 +226,10 @@ export const computePartialTrackShapeRectangle3D = ({
 
   // draw the inside lines (counterclockwise)
   while (drawLength > 0) {
-    let newDrawLength = drawLength - drawShapes3D[currentIdx].length;
-    let stillNeedsDrawing = drawLength >= end;
-    let startBeforeEndOfSection = start >= drawLength;
-    let endBeforeStartOfSection = end < newDrawLength;
+    const newDrawLength = drawLength - drawShapes3D[currentIdx].length;
+    const stillNeedsDrawing = drawLength >= end;
+    const startBeforeEndOfSection = start >= drawLength;
+    const endBeforeStartOfSection = end < newDrawLength;
 
     if (stillNeedsDrawing) {
       drawShapes3D[currentIdx].drawInnerLine({
@@ -244,10 +244,10 @@ export const computePartialTrackShapeRectangle3D = ({
   }
 
   // bundle up the shape into a mesh
-  let { curveSegments, ...materialOptions } = _options3D;
-  let geometry = new THREE.ShapeGeometry(shape, curveSegments);
-  let material = new THREE.MeshBasicMaterial(materialOptions);
-  let mesh = new THREE.Mesh(geometry, material);
+  const { curveSegments, ...materialOptions } = _options3D;
+  const geometry = new THREE.ShapeGeometry(shape, curveSegments);
+  const material = new THREE.MeshBasicMaterial(materialOptions);
+  const mesh = new THREE.Mesh(geometry, material);
   shape = mesh;
 
   return shape;
@@ -267,16 +267,39 @@ export const drawLine3D = ({ p1, p2, path3D, moveTo = false }) => {
   path3D.lineTo(p2.x, -p2.y);
 };
 
-export const drawShapes3D = [
+type DrawShape3D = {
+	part: string;
+	length: number;
+	drawOuterLine({
+		start,
+		end,
+		path3D
+	}: {
+		start?: number;
+		end: number | false;
+		path3D: THREE.Shape;
+	}): string | void;
+	drawInnerLine({
+		start,
+		end,
+		path3D
+	}: {
+		start?: number;
+		end: number | false;
+		path3D: THREE.Shape;
+	}): string | void;
+};
+
+export const drawShapes3D: DrawShape3D[] = [
   {
     part: "First Half Circle",
     length: CIRCUMFERENCE_HALF_CIRCLE,
     drawOuterLine({ start, end, path3D }) {
-      let data = "";
+      const data = "";
 
       if (end) {
-        let endAngle = (end / MEASUREMENT_RADIUS) * (180 / Math.PI);
-        let startAngle = (start / MEASUREMENT_RADIUS) * (180 / Math.PI);
+        const endAngle = (end / MEASUREMENT_RADIUS) * (180 / Math.PI);
+        const startAngle = (start / MEASUREMENT_RADIUS) * (180 / Math.PI);
 
         path3D.absarc(
           C1_OUTER.x,
@@ -287,7 +310,7 @@ export const drawShapes3D = [
           false
         );
       } else {
-        let endAngle = (start / MEASUREMENT_RADIUS) * (180 / Math.PI);
+        const endAngle = (start / MEASUREMENT_RADIUS) * (180 / Math.PI);
         // draw remaining arc
         path3D.absarc(
           C1_OUTER.x,
@@ -302,7 +325,7 @@ export const drawShapes3D = [
       return data;
     },
     drawInnerLine({ start, end, path3D }) {
-      let data = "";
+      const data = "";
       let startAngle;
       let endAngle;
 
@@ -335,8 +358,8 @@ export const drawShapes3D = [
     length: LINE_DIST,
     drawOuterLine({ end, path3D }) {
       let data = "";
-      let xEnd = end ? end : LINE_DIST;
-      let pEnd = new Vector2(C1_OUTER.x - xEnd, F_OUTER_TOP(C1_OUTER.x - xEnd));
+      const xEnd = end ? end : LINE_DIST;
+      const pEnd = new Vector2(C1_OUTER.x - xEnd, F_OUTER_TOP(C1_OUTER.x - xEnd));
 
       data += drawLine3D({
         p1: null,
@@ -347,7 +370,7 @@ export const drawShapes3D = [
       return data;
     },
     drawInnerLine({ end, path3D }) {
-      let pEnd = new Vector2(C1.x - end, -RADIUS_INNER);
+      const pEnd = new Vector2(C1.x - (end as number), -RADIUS_INNER);
 
       return drawLine3D({
         p1: null,
@@ -360,11 +383,11 @@ export const drawShapes3D = [
     part: "Second Half Circle",
     length: CIRCUMFERENCE_HALF_CIRCLE,
     drawOuterLine({ start, end, path3D }) {
-      let data = "";
+      const data = "";
 
       if (end) {
-        let endAngle = (end / MEASUREMENT_RADIUS) * (180 / Math.PI);
-        let startAngle = (start / MEASUREMENT_RADIUS) * (180 / Math.PI);
+        const endAngle = (end / MEASUREMENT_RADIUS) * (180 / Math.PI);
+        const startAngle = (start / MEASUREMENT_RADIUS) * (180 / Math.PI);
 
         path3D.absarc(
           C2_OUTER.x,
@@ -375,7 +398,7 @@ export const drawShapes3D = [
           false
         );
       } else {
-        let endAngle = (start / MEASUREMENT_RADIUS) * (180 / Math.PI);
+        const endAngle = (start / MEASUREMENT_RADIUS) * (180 / Math.PI);
         // draw remaining arc
         path3D.absarc(
           C2_OUTER.x,
@@ -390,7 +413,7 @@ export const drawShapes3D = [
       return data;
     },
     drawInnerLine({ start, end, path3D }) {
-      let data = "";
+      const data = "";
       let startAngle;
       let endAngle;
 
@@ -423,8 +446,8 @@ export const drawShapes3D = [
     length: LINE_DIST,
     drawOuterLine({ end, path3D }) {
       let data = "";
-      let xEnd = end ? end : LINE_DIST;
-      let pEnd = new Vector2(
+      const xEnd = end ? end : LINE_DIST;
+      const pEnd = new Vector2(
         C2_OUTER.x + xEnd,
         F_OUTER_BOTTOM(C2_OUTER.x + xEnd)
       );
@@ -438,7 +461,7 @@ export const drawShapes3D = [
       return data;
     },
     drawInnerLine({ end, path3D }) {
-      let pEnd = new Vector2(C2.x + end, RADIUS_INNER);
+      const pEnd = new Vector2(C2.x + (end as number), RADIUS_INNER);
 
       return drawLine3D({
         p1: null,
