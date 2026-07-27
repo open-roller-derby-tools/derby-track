@@ -85,4 +85,4 @@ three.js is an optional peer dependency, used only for the 3D shapes (`packDrawi
 
 ## License
 
-Unlicense — same as the upstream package.
+AGPL-3.0-or-later.
