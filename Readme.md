@@ -1,6 +1,6 @@
 # Derby Track
 
-A renderer-agnostic library for roller-derby track geometry, pack definition and engagement-zone computation — pure functions operating in metres, emitting plain data and SVG path strings.
+A renderer-agnostic library for roller-derby track geometry, pack definition, engagement-zone computation, and static track-layout rendering — pure functions operating in metres, emitting plain data and SVG path strings.
 
 This is a **fork of [`roller-derby-track-utils`](https://github.com/webdingens/track-viz)** by [webdingens](https://github.com/webdingens), the package used by [Track-Viz](https://github.com/webdingens/track-viz). Full credit for the track model and rules engine goes to the original author; this fork hardens and modernises it while staying API-compatible.
 
@@ -13,6 +13,7 @@ This is a **fork of [`roller-derby-track-utils`](https://github.com/webdingens/t
 - **Dropped the hard `three` dependency for 2D** — the 2D modules use a vendored `Vector2`; `three` is now an optional peer (only `packDrawing3D` needs it).
 - **Tests** — a Vitest suite (ported from the downstream Derbyboard integration), including a regression for the drift bug.
 - **Documentation** — the coordinate system and `pivotLineDist` convention are documented below.
+- **Track-layout SVG exporters (new)** — `getTrackSurfacePath` / `getInnerBoundaryPath` / `getOuterBoundaryPath` / `getPivotLinePath` / `getJammerLinePath` / `getTenFeetTicksPath` / `getOfficialLanePath` render the static track as path-data in metres (see [Track layout](#track-layout-svg-paths)).
 
 See the commit history for the individual, upstreamable changes.
 
@@ -39,6 +40,40 @@ Distance along the measurement line, used as a skater's position "around" the tr
 ### Skater data
 
 A skater is a plain object: `{ x, y, id, team, isJammer?, isPivot?, rotation? }`. `id` is any `string | number`; `team` is any label (commonly `"A"` / `"B"`).
+
+## Track layout (SVG paths)
+
+The layout generators return **SVG path-data strings in metres** for the static track markings, so any renderer (SVG, Konva `Path`, Canvas) can draw a regulation track without re-deriving the geometry. As elsewhere, transform metres → your coordinate space at draw time (e.g. scale by pixels-per-metre, translate to the track centre).
+
+| Function | Returns |
+|---|---|
+| `getTrackSurfacePath()` | outer + inner boundary subpaths — fill with `fill-rule: evenodd` for the ring |
+| `getInnerBoundaryPath()` | inner boundary oval (closed) |
+| `getOuterBoundaryPath()` | outer boundary oval (closed, slanted straights) |
+| `getPivotLinePath()` | pivot line (at the right turn / top-straight junction) |
+| `getJammerLinePath()` | jammer line, 30 ft behind the pivot line |
+| `getTenFeetTicksPath()` | all 10 ft tick marks (both straights and both turns) |
+| `getOfficialLanePath()` | outside officiating boundary, 10 ft beyond the outer track |
+
+```js
+import {
+	getTrackSurfacePath,
+	getInnerBoundaryPath,
+	getTenFeetTicksPath
+} from "@open-roller-derby-tools/derby-track";
+
+// SVG — coordinates are already in metres:
+//   <path d={getTrackSurfacePath()} fill="#d3d3d3" fill-rule="evenodd" />
+//   <path d={getInnerBoundaryPath()} stroke="blue" fill="none" />
+//   <path d={getTenFeetTicksPath()} stroke="black" />
+
+// Konva — scale metres to pixels and centre on the viewport:
+//   const PX = 35;
+//   new Konva.Path({
+//     data: getInnerBoundaryPath(),
+//     scaleX: PX, scaleY: PX, x: centerX, y: centerY, stroke: "blue"
+//   });
+```
 
 ## Peer Dependencies
 
